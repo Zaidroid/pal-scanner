@@ -1,14 +1,18 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
-import { Camera, History, Settings, Sun, Moon, ListFilter } from 'lucide-react';
+import { Camera, History as HistoryIcon, Settings as SettingsIcon, Sun, Moon, ListFilter } from 'lucide-react';
 import Scanner from './components/Scanner';
-import HistoryView from './components/History';
-import SettingsView from './components/Settings';
+import History from './components/History'; // Updated import
+import Settings from './components/Settings'; // Updated import
 import Alternatives from './components/Alternatives';
-import { useStore } from './store';
 
 function App() {
-  const { darkMode, toggleDarkMode } = useStore();
+  const [darkMode, setDarkMode] = React.useState(false);
+
+  const toggleDarkMode = () => {
+    setDarkMode((prev) => !prev);
+    document.documentElement.classList.toggle('dark');
+  };
 
   return (
     <Router>
@@ -64,7 +68,7 @@ function App() {
                     }`
                   }
                 >
-                  <History className="h-5 w-5" />
+                  <HistoryIcon className="h-5 w-5" />
                   <span>History</span>
                 </NavLink>
 
@@ -92,7 +96,7 @@ function App() {
                     }`
                   }
                 >
-                  <Settings className="h-5 w-5" />
+                  <SettingsIcon className="h-5 w-5" />
                   <span>Settings</span>
                 </NavLink>
               </div>
@@ -102,9 +106,9 @@ function App() {
           <main className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
             <Routes>
               <Route path="/" element={<Scanner />} />
-              <Route path="/history" element={<HistoryView />} />
+              <Route path="/history" element={<History />} /> {/* Updated Route */}
               <Route path="/alternatives" element={<Alternatives />} />
-              <Route path="/settings" element={<SettingsView />} />
+              <Route path="/settings" element={<Settings />} /> {/* Updated Route */}
             </Routes>
           </main>
         </div>

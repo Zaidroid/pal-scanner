@@ -1,36 +1,33 @@
 import React, { useState } from 'react';
+import { motion } from 'framer-motion';
 import { Sliders, Download, RefreshCw } from 'lucide-react';
-import { useImageStore } from '../store/imageStore';
 
-const ImageProcessor: React.FC = () => {
-  const { capturedImage, isProcessing, setIsProcessing } = useImageStore();
+const ImageProcessor = ({ capturedImage }) => {
   const [brightness, setBrightness] = useState(100);
   const [contrast, setContrast] = useState(100);
   const [saturation, setSaturation] = useState(100);
-
-  const handleDownload = () => {
-    if (capturedImage) {
-      const link = document.createElement('a');
-      link.href = capturedImage;
-      link.download = `processed-image-${Date.now()}.jpg`;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
-  };
+  const [isProcessing, setIsProcessing] = useState(false);
 
   const handleProcessing = () => {
     setIsProcessing(true);
-    // Simulate processing time
-    setTimeout(() => {
-      setIsProcessing(false);
-    }, 1500);
+    setTimeout(() => setIsProcessing(false), 2000); // Simulate processing
+  };
+
+  const handleDownload = () => {
+    const link = document.createElement('a');
+    link.href = capturedImage;
+    link.download = 'processed-image.jpg';
+    link.click();
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 space-y-6">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 space-y-6 max-w-md mx-auto">
       <div className="space-y-4">
-        <div className="space-y-2">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+        >
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
             Brightness
           </label>
@@ -42,9 +39,13 @@ const ImageProcessor: React.FC = () => {
             onChange={(e) => setBrightness(Number(e.target.value))}
             className="w-full"
           />
-        </div>
+        </motion.div>
 
-        <div className="space-y-2">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
             Contrast
           </label>
@@ -56,9 +57,13 @@ const ImageProcessor: React.FC = () => {
             onChange={(e) => setContrast(Number(e.target.value))}
             className="w-full"
           />
-        </div>
+        </motion.div>
 
-        <div className="space-y-2">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-200">
             Saturation
           </label>
@@ -70,7 +75,7 @@ const ImageProcessor: React.FC = () => {
             onChange={(e) => setSaturation(Number(e.target.value))}
             className="w-full"
           />
-        </div>
+        </motion.div>
       </div>
 
       <div className="flex justify-center space-x-4">
